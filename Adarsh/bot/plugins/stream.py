@@ -23,6 +23,8 @@ pass_db = Database(Var.DATABASE_URL, "ag_passwords")
 #file fast download
 usercaption_position = Var.CAPTION_POSITION
 caption_position = usercaption_position.lower()
+username = get_name(log_msg)
+username = username.split('@')[1]  # Split and remove the '@' symbol
 caption_text = """<i><b>{}</b></i>\n\n<b>➠Fast Download Link :</b>\n<i><b>{}</b></i></b>"""
 
 @StreamBot.on_message((filters.regex("login🔑") | filters.command("login")) & ~filters.edited, group=4)
@@ -163,7 +165,7 @@ async def channel_receive_handler(bot, broadcast):
         await bot.edit_message_caption(
             chat_id=broadcast.chat.id,
             message_id=broadcast.message_id,
-            caption=caption_text.format(get_name(log_msg), url),
+            caption=caption_text.format(get_name(log_msg), url, username),
             parse_mode="HTML"
             )
         
